@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { AuthWrapper } from './components';
 
 function App(): JSX.Element {
-    return <div className="App">Somthing should be here....</div>;
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    return (
+        <div className="App">
+            <AuthWrapper>
+                <h1>Welcome</h1>
+            </AuthWrapper>
+        </div>
+    );
 }
 
 export default App;
