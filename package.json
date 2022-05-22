@@ -22,8 +22,8 @@
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "prepare": "husky install",
-        "lint:check": "eslint src/*",
-        "lint:fix": "eslint src/* --cache --fix",
+        "lint:check": "eslint src/**/*",
+        "lint:fix": "eslint src/**/* --cache --fix",
         "prettier": "prettier --write ."
     },
     "browserslist": {
