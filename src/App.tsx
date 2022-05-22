@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-function App() {
+function App(): JSX.Element {
   return <div className="App">Somthing should be here...</div>;
 }
 
