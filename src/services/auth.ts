@@ -9,7 +9,7 @@ import config from '../config';
 const { serverUrl } = config;
 
 class AuthClient {
-    client: AxiosInstance;
+    private client: AxiosInstance;
 
     constructor() {
         this.client = axios.create({

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Input } from '../../../utilComponents';
+import { Auth } from '../../../services';
 
 function Register(): JSX.Element {
     const [email, setEmail] = useState('');
@@ -31,7 +32,9 @@ function Register(): JSX.Element {
 
     const handleRegister = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        console.log(email, username, password, birthDate, rememberMe);
+        Auth.register(email, username, birthDate, password, rememberMe)
+            .then((res) => console.log('registered succesfully'))
+            .catch((err) => console.log('cant register'));
     };
 
     return (

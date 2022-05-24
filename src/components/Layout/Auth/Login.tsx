@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Input } from '../../../utilComponents';
+import { Auth } from '../../../services';
 
 function Login(): JSX.Element {
     const [email, setEmail] = useState('');
@@ -20,7 +21,9 @@ function Login(): JSX.Element {
 
     const handleLogin = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        console.log(email, password, rememberMe);
+        Auth.login(email, password, rememberMe)
+            .then((res) => console.log('logged in succesufully'))
+            .catch((err) => console.log('failed to log in'));
     };
 
     return (
