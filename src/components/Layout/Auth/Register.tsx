@@ -5,6 +5,7 @@ function Register(): JSX.Element {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [birthDate, setBirthDate] = useState(new Date());
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setEmail(e.target.value);
@@ -18,21 +19,29 @@ function Register(): JSX.Element {
         setPassword(e.target.value);
     };
 
+    const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        const stringToDate = new Date(e.target.value);
+        setBirthDate(stringToDate);
+    };
+
     const handleRegister = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        console.log(email, username, password);
+        console.log(email, username, password, birthDate);
     };
 
     return (
         <form onSubmit={handleRegister}>
             <span>email:</span>
-            <Input value={email} onChange={handleEmailChange} />
+            <Input type="email" required value={email} onChange={handleEmailChange} />
 
             <span>username:</span>
-            <Input value={username} onChange={handleUsernameChange} />
+            <Input value={username} required onChange={handleUsernameChange} />
 
             <span>password:</span>
-            <Input value={password} onChange={handlePasswordChange} />
+            <Input type="password" required value={password} onChange={handlePasswordChange} />
+
+            <span>Birth Date:</span>
+            <Input type="date" required onChange={handleBirthDateChange} />
 
             <button type="submit">Register</button>
         </form>

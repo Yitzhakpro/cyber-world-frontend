@@ -7,7 +7,8 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 function Input(props: InputProps): JSX.Element {
     const { test = false } = props;
 
-    return <input />;
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    return <input {...props} />;
 }
 
 export default Input;
