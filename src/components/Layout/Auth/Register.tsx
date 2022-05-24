@@ -6,7 +6,7 @@ function Register(): JSX.Element {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [birthDate, setBirthDate] = useState(new Date());
+    const [birthDate, setBirthDate] = useState(new Date().toISOString().slice(0, 10));
     const [rememberMe, setRememberMe] = useState(false);
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -22,8 +22,7 @@ function Register(): JSX.Element {
     };
 
     const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        const stringToDate = new Date(e.target.value);
-        setBirthDate(stringToDate);
+        setBirthDate(e.target.value);
     };
 
     const handleRememberMeChange = (): void => {
@@ -49,7 +48,7 @@ function Register(): JSX.Element {
             <Input type="password" required value={password} onChange={handlePasswordChange} />
 
             <span>Birth Date:</span>
-            <Input type="date" required value={birthDate.toISOString().slice(0, 10)} onChange={handleBirthDateChange} />
+            <Input type="date" required value={birthDate} onChange={handleBirthDateChange} />
 
             <span>Remember me after register</span>
             <Input type="checkbox" autoComplete="off" checked={rememberMe} onChange={handleRememberMeChange} />

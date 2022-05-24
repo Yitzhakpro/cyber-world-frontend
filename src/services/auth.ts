@@ -21,7 +21,7 @@ class AuthClient {
     async register(
         email: string,
         username: string,
-        birthDate: Date,
+        birthDate: string, // iso string
         password: string,
         rememberMe: boolean
     ): Promise<AxiosResponse<any, any>> {
