@@ -6,7 +6,7 @@ import config from '../config';
     TODO: add logic for return url
 */
 
-const serverUrl = config.get('serverUrl');
+const { serverUrl } = config;
 
 class AuthClient {
     client: AxiosInstance;
@@ -25,7 +25,13 @@ class AuthClient {
         password: string,
         rememberMe: boolean
     ): Promise<AxiosResponse<any, any>> {
-        const registerResponse = await this.client.post('/register', { email, username, birthDate, password, rememberMe });
+        const registerResponse = await this.client.post('/register', {
+            email,
+            username,
+            birthDate,
+            password,
+            rememberMe,
+        });
 
         return registerResponse;
     }

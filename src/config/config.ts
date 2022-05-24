@@ -1,14 +1,5 @@
-import 'dotenv/config';
-import convict from 'convict';
-
-const config = convict({
-    serverUrl: {
-        doc: 'The url of the server',
-        default: 'http://localhost:8080',
-        env: 'REACT_APP_SERVER_URL',
-    },
-});
-
-config.validate();
+const config = {
+    serverUrl: 'http://localhost:8080' || process.env.REACT_APP_SERVER_URL,
+};
 
 export default config;
