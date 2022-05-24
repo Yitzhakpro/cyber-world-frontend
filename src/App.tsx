@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { AuthWrapper } from './components';
 
 function App(): JSX.Element {
-    const [loggedIn, setLoggedIn] = useState(false);
-
     return (
         <div className="App">
             <AuthWrapper>
