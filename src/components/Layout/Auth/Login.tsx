@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { Input } from '../../../utilComponents';
 import { Auth } from '../../../services';
 
-function Login(): JSX.Element {
+interface ILoginProps {
+    setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function Login(props: ILoginProps): JSX.Element {
+    const { setLoggedIn } = props;
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
@@ -22,8 +28,8 @@ function Login(): JSX.Element {
     const handleLogin = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         Auth.login(email, password, rememberMe)
-            .then((res) => console.log('logged in succesufully'))
-            .catch((err) => console.log('failed to log in'));
+            .then((res) => setLoggedIn(true))
+            .catch((err) => setLoggedIn(false)); // TODO: add toast error
     };
 
     return (

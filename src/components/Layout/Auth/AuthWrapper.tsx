@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Login from './Login';
 import Register from './Register';
+import { Auth } from '../../../services';
 
 interface IAuthWrapperProps {
     children: React.ReactNode | React.ReactNode[];
@@ -11,7 +12,18 @@ function AuthWrapper(props: IAuthWrapperProps): JSX.Element {
     const [loggedIn, setLoggedIn] = useState(false);
 
     useEffect(() => {
-        // TODO: add fetching user info logic
+        Auth.isAuthenticated()
+            .then((res) => {
+                if (res.data.loggedIn) {
+                    setLoggedIn(true);
+                } else {
+                    setLoggedIn(false);
+                }
+            })
+            .catch((err) => {
+                // TODO: add toast error
+                setLoggedIn(false);
+            });
         setLoggedIn(false);
     }, []);
 
@@ -21,8 +33,8 @@ function AuthWrapper(props: IAuthWrapperProps): JSX.Element {
 
     return (
         <>
-            <Login />
-            <Register />
+            <Login setLoggedIn={setLoggedIn} />
+            <Register setLoggedIn={setLoggedIn} />
         </>
     );
 }

@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { Input } from '../../../utilComponents';
 import { Auth } from '../../../services';
 
-function Register(): JSX.Element {
+interface IRegisterProps {
+    setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function Register(props: IRegisterProps): JSX.Element {
+    const { setLoggedIn } = props;
+
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -32,8 +38,8 @@ function Register(): JSX.Element {
     const handleRegister = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         Auth.register(email, username, birthDate, password, rememberMe)
-            .then((res) => console.log('registered succesfully'))
-            .catch((err) => console.log('cant register'));
+            .then((res) => setLoggedIn(true))
+            .catch((err) => setLoggedIn(false)); // TODO: add toast error
     };
 
     return (

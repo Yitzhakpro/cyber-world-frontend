@@ -18,6 +18,12 @@ class AuthClient {
         });
     }
 
+    async isAuthenticated(): Promise<AxiosResponse<any, any>> {
+        const isAuthenticatedResponse = await this.client.get('/isAuthenticated');
+
+        return isAuthenticatedResponse;
+    }
+
     async register(
         email: string,
         username: string,
