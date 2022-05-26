@@ -1,8 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import config from '../config';
+import { IsAuthenticatedResponse, RegisterResponse, LoginResponse } from './types';
 
 /*
-    TODO: add return type to functions
     TODO: add logic for return url
 */
 
@@ -18,8 +18,8 @@ class AuthClient {
         });
     }
 
-    async isAuthenticated(): Promise<AxiosResponse<any, any>> {
-        const isAuthenticatedResponse = await this.client.get('/isAuthenticated');
+    async isAuthenticated(): Promise<AxiosResponse<IsAuthenticatedResponse>> {
+        const isAuthenticatedResponse = await this.client.get<IsAuthenticatedResponse>('/isAuthenticated');
 
         return isAuthenticatedResponse;
     }
@@ -30,8 +30,8 @@ class AuthClient {
         birthDate: string, // iso string
         password: string,
         rememberMe: boolean
-    ): Promise<AxiosResponse<any, any>> {
-        const registerResponse = await this.client.post('/register', {
+    ): Promise<AxiosResponse<RegisterResponse>> {
+        const registerResponse = await this.client.post<RegisterResponse>('/register', {
             email,
             username,
             birthDate,
@@ -42,8 +42,8 @@ class AuthClient {
         return registerResponse;
     }
 
-    async login(email: string, password: string, rememberMe: boolean): Promise<AxiosResponse<any, any>> {
-        const loginResponse = await this.client.post('/login', { email, password, rememberMe });
+    async login(email: string, password: string, rememberMe: boolean): Promise<AxiosResponse<LoginResponse>> {
+        const loginResponse = await this.client.post<LoginResponse>('/login', { email, password, rememberMe });
 
         return loginResponse;
     }

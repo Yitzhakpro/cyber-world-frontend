@@ -13,8 +13,10 @@ function AuthWrapper(props: IAuthWrapperProps): JSX.Element {
 
     useEffect(() => {
         Auth.isAuthenticated()
-            .then((res) => {
-                if (res.data.loggedIn) {
+            .then(({ data }) => {
+                const { loggedIn: isLoggedIn } = data;
+
+                if (isLoggedIn) {
                     setLoggedIn(true);
                 } else {
                     setLoggedIn(false);
