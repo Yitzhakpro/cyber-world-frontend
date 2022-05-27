@@ -1,3 +1,3 @@
-import { AuthWrapper } from './Layout';
+import AuthWrapper from './AuthWrapper';
 
 export { AuthWrapper };

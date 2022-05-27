@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Login from './Login';
-import Register from './Register';
-import { Auth } from '../../../services';
+import { AuthPage } from '../Auth';
+import { Auth } from '../../services';
 
 interface IAuthWrapperProps {
     children: React.ReactNode | React.ReactNode[];
@@ -33,12 +32,7 @@ function AuthWrapper(props: IAuthWrapperProps): JSX.Element {
         return <div>{children}</div>;
     }
 
-    return (
-        <>
-            <Login setLoggedIn={setLoggedIn} />
-            <Register setLoggedIn={setLoggedIn} />
-        </>
-    );
+    return <AuthPage setLoggedIn={setLoggedIn} />;
 }
 
 export default AuthWrapper;
