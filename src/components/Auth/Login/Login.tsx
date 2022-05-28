@@ -11,7 +11,6 @@ function Login(props: ILoginProps): JSX.Element {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [rememberMe, setRememberMe] = useState(false);
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setEmail(e.target.value);
@@ -21,13 +20,9 @@ function Login(props: ILoginProps): JSX.Element {
         setPassword(e.target.value);
     };
 
-    const handleRememberMeChange = (): void => {
-        setRememberMe((prevCheck) => !prevCheck);
-    };
-
     const handleLogin = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        Auth.login(email, password, rememberMe)
+        Auth.login(email, password)
             .then((res) => setLoggedIn(true))
             .catch((err) => setLoggedIn(false)); // TODO: add toast error
     };
@@ -39,9 +34,6 @@ function Login(props: ILoginProps): JSX.Element {
 
             <span>password:</span>
             <Input value={password} onChange={handlePasswordChange} />
-
-            <span>Remember me</span>
-            <Input type="checkbox" checked={rememberMe} onChange={handleRememberMeChange} />
 
             <button type="submit">Login</button>
         </form>

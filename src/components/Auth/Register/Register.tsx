@@ -13,7 +13,6 @@ function Register(props: IRegisterProps): JSX.Element {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [birthDate, setBirthDate] = useState(new Date().toISOString().slice(0, 10));
-    const [rememberMe, setRememberMe] = useState(false);
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setEmail(e.target.value);
@@ -31,13 +30,9 @@ function Register(props: IRegisterProps): JSX.Element {
         setBirthDate(e.target.value);
     };
 
-    const handleRememberMeChange = (): void => {
-        setRememberMe((prevCheck) => !prevCheck);
-    };
-
     const handleRegister = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        Auth.register(email, username, birthDate, password, rememberMe)
+        Auth.register(email, username, birthDate, password)
             .then((res) => setLoggedIn(true))
             .catch((err) => setLoggedIn(false)); // TODO: add toast error
     };
@@ -55,9 +50,6 @@ function Register(props: IRegisterProps): JSX.Element {
 
             <span>Birth Date:</span>
             <Input type="date" required value={birthDate} onChange={handleBirthDateChange} />
-
-            <span>Remember me after register</span>
-            <Input type="checkbox" autoComplete="off" checked={rememberMe} onChange={handleRememberMeChange} />
 
             <button type="submit">Register</button>
         </form>

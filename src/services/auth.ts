@@ -28,22 +28,20 @@ class AuthClient {
         email: string,
         username: string,
         birthDate: string, // iso string
-        password: string,
-        rememberMe: boolean
+        password: string
     ): Promise<AxiosResponse<RegisterResponse>> {
         const registerResponse = await this.client.post<RegisterResponse>('/register', {
             email,
             username,
             birthDate,
             password,
-            rememberMe,
         });
 
         return registerResponse;
     }
 
-    async login(email: string, password: string, rememberMe: boolean): Promise<AxiosResponse<LoginResponse>> {
-        const loginResponse = await this.client.post<LoginResponse>('/login', { email, password, rememberMe });
+    async login(email: string, password: string): Promise<AxiosResponse<LoginResponse>> {
+        const loginResponse = await this.client.post<LoginResponse>('/login', { email, password });
 
         return loginResponse;
     }
