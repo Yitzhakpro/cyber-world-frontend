@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { AuthPage } from '../Auth';
-import { Auth } from '../../services';
 import { useIsAuthenticated, useActivity } from '../../hooks';
 
 interface IAuthWrapperProps {

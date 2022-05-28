@@ -1,7 +1,7 @@
 // general
 type Rank = 'owner' | 'mod' | 'helper' | 'user';
 
-interface UserInfo {
+export interface UserInfo {
     username: string;
     rank: Rank;
     above18: boolean;
