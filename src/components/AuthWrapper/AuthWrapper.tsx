@@ -1,6 +1,7 @@
 import React from 'react';
 import { AuthPage } from '../Auth';
 import { useAuthentication } from '../../hooks';
+import { UserContext } from '../../context';
 
 interface IAuthWrapperProps {
     children: React.ReactNode | React.ReactNode[];
@@ -12,7 +13,7 @@ function AuthWrapper(props: IAuthWrapperProps): JSX.Element {
     const { loggedIn, setLoggedIn, userInfo } = useAuthentication();
 
     if (loggedIn) {
-        return <div>{children}</div>;
+        return <UserContext.Provider value={userInfo}>{children}</UserContext.Provider>;
     }
 
     return <AuthPage setLoggedIn={setLoggedIn} />;
