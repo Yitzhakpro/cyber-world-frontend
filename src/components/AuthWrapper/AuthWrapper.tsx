@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AuthPage } from '../Auth';
 import { Auth } from '../../services';
+import { useActivity } from '../../hooks';
 
 interface IAuthWrapperProps {
     children: React.ReactNode | React.ReactNode[];
@@ -25,8 +26,8 @@ function AuthWrapper(props: IAuthWrapperProps): JSX.Element {
                 // TODO: add toast error
                 setLoggedIn(false);
             });
-        setLoggedIn(false);
     }, []);
+    useActivity({ loggedIn, setLoggedIn });
 
     if (loggedIn) {
         return <div>{children}</div>;

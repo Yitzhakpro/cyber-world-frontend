@@ -18,6 +18,12 @@ class AuthClient {
         });
     }
 
+    async activity(): Promise<AxiosResponse<any>> {
+        const activityResponse = await this.client.get('/activity');
+
+        return activityResponse;
+    }
+
     async isAuthenticated(): Promise<AxiosResponse<IsAuthenticatedResponse>> {
         const isAuthenticatedResponse = await this.client.get<IsAuthenticatedResponse>('/isAuthenticated');
 
