@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import config from '../config';
-import { IsAuthenticatedResponse, RegisterResponse, LoginResponse, UserInfo } from './types';
+import { IsAuthenticatedResponse, RegisterResponse, LoginResponse } from './types';
+import { UserInfo } from '../types';
 
 /*
     TODO: add logic for return url

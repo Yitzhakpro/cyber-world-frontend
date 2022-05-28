@@ -1,4 +1,3 @@
-import useIsAuthenticated from './useIsAuthenticated';
-import useActivity from './useActivity';
+import useAuthentication from './useAuthentication';
 
-export { useIsAuthenticated, useActivity };
+export { useAuthentication };

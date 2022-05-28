@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { AuthPage } from '../Auth';
-import { useIsAuthenticated, useActivity } from '../../hooks';
+import { useAuthentication } from '../../hooks';
 
 interface IAuthWrapperProps {
     children: React.ReactNode | React.ReactNode[];
@@ -8,10 +8,8 @@ interface IAuthWrapperProps {
 
 function AuthWrapper(props: IAuthWrapperProps): JSX.Element {
     const { children } = props;
-    const [loggedIn, setLoggedIn] = useState(false);
 
-    useIsAuthenticated({ setLoggedIn });
-    useActivity({ loggedIn, setLoggedIn });
+    const { loggedIn, setLoggedIn, userInfo } = useAuthentication();
 
     if (loggedIn) {
         return <div>{children}</div>;
