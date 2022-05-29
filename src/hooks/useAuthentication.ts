@@ -40,14 +40,17 @@ const useAuthentication = (): UseAuthenticationReturn => {
 
         const intervalId = setInterval(async () => {
             try {
-                const res = await Auth.activity();
+                const { data: newUserInfo } = await Auth.activity();
+                if (JSON.stringify(userInfo) !== JSON.stringify(newUserInfo)) {
+                    setUserInfo(newUserInfo);
+                }
             } catch (err) {
                 setLoggedIn(false);
             }
         }, 240_000);
 
         return () => clearInterval(intervalId);
-    }, [loggedIn]);
+    }, [userInfo, loggedIn]);
 
     return { loggedIn, setLoggedIn, userInfo };
 };
