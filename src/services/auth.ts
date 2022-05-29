@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import config from '../config';
+import config from '@config';
 import { IsAuthenticatedResponse, RegisterResponse, LoginResponse } from './types';
 import { UserInfo } from '../types';
 

@@ -56,5 +56,14 @@
         "husky": "^8.0.1",
         "lint-staged": "^12.4.1",
         "prettier": "^2.6.2"
+    },
+    "_moduleAliases": {
+        "@types": "src/types/index.ts",
+        "@config": "src/config/index.ts",
+        "@hooks": "src/hooks/index.ts",
+        "@context": "src/context/index.ts",
+        "@services": "src/services/index.ts",
+        "@components": "src/components/index.ts",
+        "@utilComponents": "src/utilComponents/index.ts"
     }
 }
