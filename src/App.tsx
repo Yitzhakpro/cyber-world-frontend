@@ -1,11 +1,11 @@
 import React from 'react';
-import { AuthWrapper } from './components';
+import { AuthWrapper, Chat } from './components';
 
 function App(): JSX.Element {
     return (
         <div className="App">
             <AuthWrapper>
-                <h1>Welcome</h1>
+                <Chat />
             </AuthWrapper>
         </div>
     );

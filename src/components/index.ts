@@ -1,3 +1,4 @@
 import AuthWrapper from './AuthWrapper';
+import Chat from './Chat';
 
-export { AuthWrapper };
+export { AuthWrapper, Chat };
