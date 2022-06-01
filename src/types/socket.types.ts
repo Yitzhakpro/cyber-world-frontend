@@ -23,5 +23,6 @@ interface ServerToClientEvents {
 
 interface ClientToServerEvents {
     enter_room: (roomID: string, enterMode: EnterMode) => void;
+    leave_room: () => void;
     message: (message: string) => void;
 }

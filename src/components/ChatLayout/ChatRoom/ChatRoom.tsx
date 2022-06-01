@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import Message from './Message';
 import MessagingInput from './MessagingInput';
 import { ClientMessageSocket, MessageData } from '../../../types';
@@ -8,8 +9,21 @@ interface IChatRoomProps {
 }
 
 function ChatRoom(props: IChatRoomProps): JSX.Element {
+    const params = useParams();
     const { socketClient } = props;
     const [messages, setMessages] = useState<MessageData[]>([]);
+    const readyToLeave = useRef(false);
+
+    // used to leave the room after exiting from chat page
+    useEffect(() => {
+        return () => {
+            if (readyToLeave.current) {
+                socketClient.emit('leave_room');
+            } else {
+                readyToLeave.current = true;
+            }
+        };
+    }, [socketClient, params]);
 
     // recieve messages logic
     useEffect(() => {
@@ -24,7 +38,6 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
         });
 
         return () => {
-            // TODO: fix unable to know when user disconnected
             socketClient.off('message_recieved');
         };
     }, [socketClient, messages]);
