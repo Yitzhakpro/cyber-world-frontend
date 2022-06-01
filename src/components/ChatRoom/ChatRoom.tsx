@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import SocketIoClient, { Socket } from 'socket.io-client';
+import Message from './Message';
 import MessagingInput from './MessagingInput';
 import config from '../../config';
 import { ServerToClientEvents, ClientToServerEvents, JoinStatus, MessageData } from './types';
@@ -64,20 +65,17 @@ function ChatRoom(): JSX.Element {
 
     return (
         <div>
-            <h1>chat here</h1>
+            <h1>chat room</h1>
 
             {joinStatus.joined ? (
                 <>
                     <div>
                         {messages.length > 0 &&
                             messages.map((userMessage) => {
+                                const { id, username, rank, text, timestamp } = userMessage;
+
                                 return (
-                                    <div>
-                                        <span>[{userMessage.rank}] </span>
-                                        <span>{userMessage.username}</span>
-                                        <p>{userMessage.text}</p>
-                                        <span>{userMessage.timestamp.toLocaleTimeString()}</span>
-                                    </div>
+                                    <Message key={id} author={username} rank={rank} text={text} timestamp={timestamp} />
                                 );
                             })}
                     </div>
