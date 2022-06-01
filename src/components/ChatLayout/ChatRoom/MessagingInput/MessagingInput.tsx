@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input } from '../../../utilComponents';
+import { Input } from '../../../../utilComponents';
 
 interface IMessageInputProps {
     sendMessage: (message: string) => void;

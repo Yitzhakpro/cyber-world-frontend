@@ -1,16 +1,13 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthWrapper, RoomSelect, ChatRoom } from './components';
+import { BrowserRouter } from 'react-router-dom';
+import { AuthWrapper, ChatLayout } from './components';
 
 function App(): JSX.Element {
     return (
         <div className="App">
             <AuthWrapper>
                 <BrowserRouter>
-                    <Routes>
-                        <Route path="/" element={<RoomSelect />} />
-                        <Route path=":roomID" element={<ChatRoom />} />
-                    </Routes>
+                    <ChatLayout />
                 </BrowserRouter>
             </AuthWrapper>
         </div>

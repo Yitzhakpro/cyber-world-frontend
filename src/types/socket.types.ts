@@ -1,10 +1,10 @@
-// room status
-export interface JoinStatus {
-    joined: boolean;
-    message?: string;
-}
+import { Socket } from 'socket.io-client';
 
 // socket related
+export type ClientMessageSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
+
+type EnterMode = 'create' | 'join';
+
 export interface MessageData {
     id: string;
     username: string;
@@ -13,7 +13,7 @@ export interface MessageData {
     timestamp: Date;
 }
 
-export interface ServerToClientEvents {
+interface ServerToClientEvents {
     // join logic
     join_failed: (reason: string) => void;
     joined_successfully: () => void;
@@ -21,7 +21,7 @@ export interface ServerToClientEvents {
     message_recieved: (message: MessageData) => void;
 }
 
-export interface ClientToServerEvents {
-    join_room: (roomID: string) => void;
+interface ClientToServerEvents {
+    enter_room: (roomID: string, enterMode: EnterMode) => void;
     message: (message: string) => void;
 }
