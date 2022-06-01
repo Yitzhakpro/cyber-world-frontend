@@ -6,25 +6,42 @@ import config from '../../config';
 
 const { serverUrl } = config;
 
+interface ServerToClientEvents {
+    // join logic
+    join_failed: (reason: string) => void;
+    joined_successfully: () => void;
+    // message logic
+    message_recieved: (message: string) => void;
+}
+
+interface ClientToServerEvents {
+    join_room: (roomID: string) => void;
+    message: (message: string) => void;
+}
+
 function ChatRoom(): JSX.Element {
     const params = useParams();
-    const [socket, setSocket] = useState<Socket | null>(null);
+    const [socket, setSocket] = useState<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null);
 
     const [joinStatus, setJoinStatus] = useState<{ joined: boolean; message?: string }>({ joined: false, message: '' });
     const [messages, setMessages] = useState<string[]>([]);
 
     useEffect(() => {
-        const socketInstance = SocketIoClient(serverUrl, { withCredentials: true });
+        const socketInstance: Socket<ServerToClientEvents, ClientToServerEvents> = SocketIoClient(serverUrl, {
+            withCredentials: true,
+        });
         setSocket(socketInstance);
 
-        // join room logic
-        socketInstance.emit('join_room', params.roomID);
-        socketInstance.on('joined_successfully', () => {
-            setJoinStatus({ joined: true });
-        });
-        socketInstance.on('join_failed', (reason: string) => {
-            setJoinStatus({ joined: false, message: reason });
-        });
+        if (params.roomID) {
+            // join room logic
+            socketInstance.emit('join_room', params.roomID);
+            socketInstance.on('joined_successfully', () => {
+                setJoinStatus({ joined: true });
+            });
+            socketInstance.on('join_failed', (reason: string) => {
+                setJoinStatus({ joined: false, message: reason });
+            });
+        }
 
         return () => {
             socketInstance.close();
