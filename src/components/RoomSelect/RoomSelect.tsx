@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function RoomSelect(): JSX.Element {
+    const navigate = useNavigate();
     const [roomSelectMode, setRoomSelectMode] = useState<'join' | 'create'>('create');
     const [roomId, setRoomId] = useState('');
 
@@ -12,8 +14,10 @@ function RoomSelect(): JSX.Element {
         }
     };
 
-    const handleRoomSelect = (): void => {
-        console.log(roomId);
+    const handleRoomSelect = (e: React.FormEvent<HTMLFormElement>): void => {
+        e.preventDefault();
+        // TODO: maybe have socket object here
+        navigate(`/${roomId}`);
     };
 
     return (
@@ -22,10 +26,10 @@ function RoomSelect(): JSX.Element {
                 {roomSelectMode}
             </button>
 
-            <input value={roomId} onChange={(e) => setRoomId(e.target.value)} />
-            <button type="button" onClick={handleRoomSelect}>
-                {roomSelectMode}
-            </button>
+            <form onSubmit={handleRoomSelect}>
+                <input required value={roomId} onChange={(e) => setRoomId(e.target.value)} />
+                <button type="submit">{roomSelectMode}</button>
+            </form>
         </div>
     );
 }
