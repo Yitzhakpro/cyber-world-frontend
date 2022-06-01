@@ -1,4 +1,5 @@
 import AuthWrapper from './AuthWrapper';
-import Chat from './Chat';
+import RoomSelect from './RoomSelect';
+import ChatRoom from './ChatRoom';
 
-export { AuthWrapper, Chat };
+export { AuthWrapper, RoomSelect, ChatRoom };
