@@ -5,7 +5,7 @@ interface IMessageInputProps {
     sendMessage: (message: string) => void;
 }
 
-function MessageInput(props: IMessageInputProps): JSX.Element {
+function MessagingInput(props: IMessageInputProps): JSX.Element {
     const { sendMessage } = props;
     const [message, setMessage] = useState('');
 
@@ -29,4 +29,4 @@ function MessageInput(props: IMessageInputProps): JSX.Element {
     );
 }
 
-export default MessageInput;
+export default MessagingInput;

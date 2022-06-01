@@ -1,30 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import SocketIoClient, { Socket } from 'socket.io-client';
-import MessageInput from './MessageInput';
+import MessagingInput from './MessagingInput';
 import config from '../../config';
+import { ServerToClientEvents, ClientToServerEvents, JoinStatus, MessageData } from './types';
 
 const { serverUrl } = config;
-
-interface ServerToClientEvents {
-    // join logic
-    join_failed: (reason: string) => void;
-    joined_successfully: () => void;
-    // message logic
-    message_recieved: (message: string) => void;
-}
-
-interface ClientToServerEvents {
-    join_room: (roomID: string) => void;
-    message: (message: string) => void;
-}
 
 function ChatRoom(): JSX.Element {
     const params = useParams();
     const [socket, setSocket] = useState<Socket<ServerToClientEvents, ClientToServerEvents> | null>(null);
 
-    const [joinStatus, setJoinStatus] = useState<{ joined: boolean; message?: string }>({ joined: false, message: '' });
-    const [messages, setMessages] = useState<string[]>([]);
+    const [joinStatus, setJoinStatus] = useState<JoinStatus>({ joined: false, message: '' });
+    const [messages, setMessages] = useState<MessageData[]>([]);
 
     useEffect(() => {
         const socketInstance: Socket<ServerToClientEvents, ClientToServerEvents> = SocketIoClient(serverUrl, {
@@ -55,8 +43,13 @@ function ChatRoom(): JSX.Element {
 
     // recieve messages logic
     useEffect(() => {
-        socket?.on('message_recieved', (newMessage: string) => {
-            const copyMessages = [...messages, newMessage];
+        socket?.on('message_recieved', (newMessage) => {
+            const formatedMessage: MessageData = {
+                ...newMessage,
+                timestamp: new Date(newMessage.timestamp),
+            };
+
+            const copyMessages = [...messages, formatedMessage];
             setMessages(copyMessages);
         });
 
@@ -78,10 +71,17 @@ function ChatRoom(): JSX.Element {
                     <div>
                         {messages.length > 0 &&
                             messages.map((userMessage) => {
-                                return <p>{userMessage}</p>;
+                                return (
+                                    <div>
+                                        <span>[{userMessage.rank}] </span>
+                                        <span>{userMessage.username}</span>
+                                        <p>{userMessage.text}</p>
+                                        <span>{userMessage.timestamp.toLocaleTimeString()}</span>
+                                    </div>
+                                );
                             })}
                     </div>
-                    <MessageInput sendMessage={sendMessage} />
+                    <MessagingInput sendMessage={sendMessage} />
                 </>
             ) : (
                 <p>{joinStatus.message}</p>
