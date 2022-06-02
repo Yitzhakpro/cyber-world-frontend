@@ -5,6 +5,11 @@ export type ClientMessageSocket = Socket<ServerToClientEvents, ClientToServerEve
 
 type EnterMode = 'create' | 'join';
 
+export interface JoinStatus {
+    joined: boolean;
+    errorMessage?: string;
+}
+
 export interface MessageData {
     id: string;
     username: string;

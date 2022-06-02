@@ -1,34 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ClientMessageSocket } from '../../../types';
+import { ClientMessageSocket, JoinStatus } from '../../../types';
 
 interface IRoomSelectProps {
     socketClient: ClientMessageSocket;
+    joinStatus: JoinStatus;
+    setJoinStatus: React.Dispatch<React.SetStateAction<JoinStatus>>;
 }
 
 function RoomSelect(props: IRoomSelectProps): JSX.Element {
-    const { socketClient } = props;
+    const { socketClient, joinStatus, setJoinStatus } = props;
 
     const navigate = useNavigate();
 
     const [roomSelectMode, setRoomSelectMode] = useState<'join' | 'create'>('create');
     const [roomId, setRoomId] = useState('');
-    const [enterError, setEnterError] = useState('');
 
     useEffect(() => {
         socketClient.on('joined_successfully', () => {
-            setEnterError('');
+            setJoinStatus({ joined: true, errorMessage: '' });
             navigate(`/${roomId}`);
         });
         socketClient.on('join_failed', (reason: string) => {
-            setEnterError(reason);
+            setJoinStatus({ joined: false, errorMessage: reason });
         });
 
         return () => {
             socketClient.off('joined_successfully');
             socketClient.off('join_failed');
         };
-    }, [socketClient, roomId, navigate]);
+    }, [socketClient, setJoinStatus, roomId, navigate]);
 
     const handleRoomSelectModeChange = (): void => {
         if (roomSelectMode === 'create') {
@@ -40,7 +41,7 @@ function RoomSelect(props: IRoomSelectProps): JSX.Element {
 
     const handleRoomSelect = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        setEnterError('');
+        setJoinStatus({ joined: false, errorMessage: '' });
         socketClient.emit('enter_room', roomId, roomSelectMode);
     };
 
@@ -55,7 +56,7 @@ function RoomSelect(props: IRoomSelectProps): JSX.Element {
                 <button type="submit">{roomSelectMode}</button>
             </form>
 
-            {enterError}
+            {joinStatus.errorMessage}
         </div>
     );
 }

@@ -2,20 +2,26 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Message from './Message';
 import MessagingInput from './MessagingInput';
-import { ClientMessageSocket, MessageData } from '../../../types';
+import { ClientMessageSocket, JoinStatus, MessageData } from '../../../types';
 
 interface IChatRoomProps {
     socketClient: ClientMessageSocket;
+    joinStatus: JoinStatus;
+    setJoinStatus: React.Dispatch<React.SetStateAction<JoinStatus>>;
 }
 
 function ChatRoom(props: IChatRoomProps): JSX.Element {
+    const { socketClient, joinStatus, setJoinStatus } = props;
     const params = useParams();
-    const { socketClient } = props;
     const [messages, setMessages] = useState<MessageData[]>([]);
     const readyToLeave = useRef(false);
 
     // used to leave the room after exiting from chat page
     useEffect(() => {
+        if (!joinStatus.joined) {
+            const roomId = params.roomID || '';
+            socketClient.emit('enter_room', roomId, 'join');
+        }
         return () => {
             if (readyToLeave.current) {
                 socketClient.emit('leave_room');
@@ -23,7 +29,7 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
                 readyToLeave.current = true;
             }
         };
-    }, [socketClient, params]);
+    }, [socketClient, joinStatus.joined, params.roomID]);
 
     // recieve messages logic
     useEffect(() => {
