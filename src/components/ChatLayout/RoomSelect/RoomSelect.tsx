@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { generateRoomID } from '../../../utils';
 import { ClientMessageSocket, JoinStatus } from '../../../types';
 
 interface IRoomSelectProps {
@@ -39,10 +40,21 @@ function RoomSelect(props: IRoomSelectProps): JSX.Element {
         }
     };
 
+    const joinRoom = (id?: string): void => {
+        const roomIDToJoin = id || roomId;
+        setRoomId(roomIDToJoin);
+        setJoinStatus({ joined: false, errorMessage: '' });
+        socketClient.emit('enter_room', roomIDToJoin, roomSelectMode);
+    };
+
     const handleRoomSelect = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        setJoinStatus({ joined: false, errorMessage: '' });
-        socketClient.emit('enter_room', roomId, roomSelectMode);
+        joinRoom();
+    };
+
+    const handleRandRoomCreate = (): void => {
+        const randomRoomID = generateRoomID();
+        joinRoom(randomRoomID);
     };
 
     return (
@@ -54,6 +66,11 @@ function RoomSelect(props: IRoomSelectProps): JSX.Element {
             <form onSubmit={handleRoomSelect}>
                 <input required value={roomId} onChange={(e) => setRoomId(e.target.value)} />
                 <button type="submit">{roomSelectMode}</button>
+                {roomSelectMode === 'create' && (
+                    <button type="button" onClick={handleRandRoomCreate}>
+                        Generate Random Room ID
+                    </button>
+                )}
             </form>
 
             {joinStatus.errorMessage}
