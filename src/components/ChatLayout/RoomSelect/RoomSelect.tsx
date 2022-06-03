@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import RoomsList from '../RoomsList';
 import { generateRoomID } from '../../../utils';
-import { ClientMessageSocket, JoinStatus } from '../../../types';
+import { ClientMessageSocket, JoinStatus, EnterMode } from '../../../types';
 
 interface IRoomSelectProps {
     socketClient: ClientMessageSocket;
@@ -14,8 +15,21 @@ function RoomSelect(props: IRoomSelectProps): JSX.Element {
 
     const navigate = useNavigate();
 
-    const [roomSelectMode, setRoomSelectMode] = useState<'join' | 'create'>('create');
+    const [roomsList, setRoomsList] = useState<string[]>([]);
+    const [roomSelectMode, setRoomSelectMode] = useState<EnterMode>('create');
     const [roomId, setRoomId] = useState('');
+
+    // getting all available rooms
+    useEffect(() => {
+        socketClient.emit('get_all_rooms');
+        socketClient.on('all_rooms', (allRooms) => {
+            setRoomsList(allRooms);
+        });
+
+        return () => {
+            socketClient.off('all_rooms');
+        };
+    }, [socketClient]);
 
     useEffect(() => {
         socketClient.on('joined_successfully', () => {
@@ -40,11 +54,13 @@ function RoomSelect(props: IRoomSelectProps): JSX.Element {
         }
     };
 
-    const joinRoom = (id?: string): void => {
+    const joinRoom = (id?: string, enterMode?: EnterMode): void => {
         const roomIDToJoin = id || roomId;
+        const selectedEnterMode = enterMode || roomSelectMode;
+
         setRoomId(roomIDToJoin);
         setJoinStatus({ joined: false, errorMessage: '' });
-        socketClient.emit('enter_room', roomIDToJoin, roomSelectMode);
+        socketClient.emit('enter_room', roomIDToJoin, selectedEnterMode);
     };
 
     const handleRoomSelect = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -59,6 +75,8 @@ function RoomSelect(props: IRoomSelectProps): JSX.Element {
 
     return (
         <div>
+            {roomsList.length > 0 && <RoomsList roomsList={roomsList} joinRoom={joinRoom} />}
+
             <button type="button" onClick={handleRoomSelectModeChange}>
                 {roomSelectMode}
             </button>

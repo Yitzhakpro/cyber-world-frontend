@@ -3,7 +3,7 @@ import { Socket } from 'socket.io-client';
 // socket related
 export type ClientMessageSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 
-type EnterMode = 'create' | 'join';
+export type EnterMode = 'create' | 'join';
 
 export interface JoinStatus {
     joined: boolean;
@@ -19,6 +19,7 @@ export interface MessageData {
 }
 
 interface ServerToClientEvents {
+    all_rooms: (allRooms: string[]) => void;
     // join logic
     join_failed: (reason: string) => void;
     joined_successfully: () => void;
@@ -27,6 +28,7 @@ interface ServerToClientEvents {
 }
 
 interface ClientToServerEvents {
+    get_all_rooms: () => void;
     enter_room: (roomID: string, enterMode: EnterMode) => void;
     leave_room: () => void;
     message: (message: string) => void;
