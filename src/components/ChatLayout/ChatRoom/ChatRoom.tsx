@@ -21,15 +21,20 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
         if (!joinStatus.joined) {
             const roomId = params.roomID || '';
             socketClient.emit('enter_room', roomId, 'join');
+            socketClient.on('join_failed', (reason) => {
+                setJoinStatus({ joined: false, errorMessage: reason });
+            });
         }
         return () => {
+            socketClient.off('join_failed');
+
             if (readyToLeave.current) {
                 socketClient.emit('leave_room');
             } else {
                 readyToLeave.current = true;
             }
         };
-    }, [socketClient, joinStatus.joined, params.roomID]);
+    }, [socketClient, joinStatus.joined, setJoinStatus, params.roomID]);
 
     // recieve messages logic
     useEffect(() => {
@@ -54,17 +59,25 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
 
     return (
         <div>
-            <h1>chat room</h1>
+            {joinStatus.joined ? (
+                <>
+                    <h1>chat room</h1>
 
-            <div>
-                {messages.length > 0 &&
-                    messages.map((userMessage) => {
-                        const { id, username, rank, text, timestamp } = userMessage;
+                    <div>
+                        {messages.length > 0 &&
+                            messages.map((userMessage) => {
+                                const { id, username, rank, text, timestamp } = userMessage;
 
-                        return <Message key={id} author={username} rank={rank} text={text} timestamp={timestamp} />;
-                    })}
-            </div>
-            <MessagingInput sendMessage={sendMessage} />
+                                return (
+                                    <Message key={id} author={username} rank={rank} text={text} timestamp={timestamp} />
+                                );
+                            })}
+                    </div>
+                    <MessagingInput sendMessage={sendMessage} />
+                </>
+            ) : (
+                <p>{joinStatus.errorMessage}</p>
+            )}
         </div>
     );
 }
