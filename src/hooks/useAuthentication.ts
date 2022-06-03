@@ -3,12 +3,14 @@ import { Auth } from '../services';
 import { UserInfo } from '../types';
 
 interface UseAuthenticationReturn {
+    loading: boolean;
     loggedIn: boolean;
     setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
     userInfo: UserInfo;
 }
 
 const useAuthentication = (): UseAuthenticationReturn => {
+    const [loading, setLoading] = useState(true);
     const [loggedIn, setLoggedIn] = useState(false);
     const [userInfo, setUserInfo] = useState<UserInfo>({
         username: '',
@@ -18,6 +20,8 @@ const useAuthentication = (): UseAuthenticationReturn => {
     });
 
     useEffect(() => {
+        setLoading(true);
+
         Auth.isAuthenticated()
             .then(({ data }) => {
                 const { loggedIn: isLoggedIn, userInfo: userData } = data;
@@ -32,6 +36,9 @@ const useAuthentication = (): UseAuthenticationReturn => {
             .catch((err) => {
                 // TODO: add toast error
                 setLoggedIn(false);
+            })
+            .finally(() => {
+                setLoading(false);
             });
     }, []);
 
@@ -52,7 +59,7 @@ const useAuthentication = (): UseAuthenticationReturn => {
         return () => clearInterval(intervalId);
     }, [userInfo, loggedIn]);
 
-    return { loggedIn, setLoggedIn, userInfo };
+    return { loading, loggedIn, setLoggedIn, userInfo };
 };
 
 export default useAuthentication;
