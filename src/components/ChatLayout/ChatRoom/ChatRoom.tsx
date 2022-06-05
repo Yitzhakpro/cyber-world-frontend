@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import Message from './Message';
 import MessagingInput from './MessagingInput';
+import { UserContext } from '../../../context';
 import { ClientMessageSocket, JoinStatus, MessageData } from '../../../types';
 
 interface IChatRoomProps {
@@ -13,6 +14,7 @@ interface IChatRoomProps {
 function ChatRoom(props: IChatRoomProps): JSX.Element {
     const { socketClient, joinStatus, setJoinStatus } = props;
     const params = useParams();
+    const { username } = useContext(UserContext);
     const [messages, setMessages] = useState<MessageData[]>([]);
     const readyToLeave = useRef(false);
 
@@ -66,10 +68,17 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
                     <div>
                         {messages.length > 0 &&
                             messages.map((userMessage) => {
-                                const { id, username, rank, text, timestamp } = userMessage;
+                                const { id, username: usernameSent, rank, text, timestamp } = userMessage;
+                                const messageAuthor = usernameSent === username ? 'You' : usernameSent;
 
                                 return (
-                                    <Message key={id} author={username} rank={rank} text={text} timestamp={timestamp} />
+                                    <Message
+                                        key={id}
+                                        author={messageAuthor}
+                                        rank={rank}
+                                        text={text}
+                                        timestamp={timestamp}
+                                    />
                                 );
                             })}
                     </div>
