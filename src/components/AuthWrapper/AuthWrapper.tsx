@@ -10,8 +10,11 @@ interface IAuthWrapperProps {
 function AuthWrapper(props: IAuthWrapperProps): JSX.Element {
     const { children } = props;
 
-    const { loggedIn, setLoggedIn, userInfo } = useAuthentication();
+    const { loading, loggedIn, setLoggedIn, userInfo } = useAuthentication();
 
+    if (loading) {
+        return <p>loading...</p>;
+    }
     if (loggedIn) {
         return <UserContext.Provider value={userInfo}>{children}</UserContext.Provider>;
     }

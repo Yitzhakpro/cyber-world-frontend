@@ -1,11 +1,14 @@
 import React from 'react';
-import { AuthWrapper } from './components';
+import { BrowserRouter } from 'react-router-dom';
+import { AuthWrapper, ChatLayout } from './components';
 
 function App(): JSX.Element {
     return (
         <div className="App">
             <AuthWrapper>
-                <h1>Welcome</h1>
+                <BrowserRouter>
+                    <ChatLayout />
+                </BrowserRouter>
             </AuthWrapper>
         </div>
     );
