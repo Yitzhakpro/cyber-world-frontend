@@ -30,10 +30,10 @@ function Login(props: ILoginProps): JSX.Element {
     return (
         <form onSubmit={handleLogin}>
             <span>email:</span>
-            <Input value={email} onChange={handleEmailChange} />
+            <Input type="email" required value={email} onChange={handleEmailChange} />
 
             <span>password:</span>
-            <Input value={password} onChange={handlePasswordChange} />
+            <Input type="password" required value={password} onChange={handlePasswordChange} />
 
             <button type="submit">Login</button>
         </form>
