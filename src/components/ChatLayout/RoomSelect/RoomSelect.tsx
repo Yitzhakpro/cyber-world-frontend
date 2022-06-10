@@ -32,8 +32,8 @@ function RoomSelect(props: IRoomSelectProps): JSX.Element {
     }, [socketClient]);
 
     useEffect(() => {
-        socketClient.on('joined_successfully', () => {
-            setJoinStatus({ joined: true, errorMessage: '' });
+        socketClient.on('joined_successfully', (roomInfo) => {
+            setJoinStatus({ joined: true, roomInfo, errorMessage: '' });
             navigate(`/${roomId}`);
         });
         socketClient.on('join_failed', (reason: string) => {
