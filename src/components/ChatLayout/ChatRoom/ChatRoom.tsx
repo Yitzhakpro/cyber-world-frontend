@@ -80,6 +80,10 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
         socketClient.emit('message', message);
     };
 
+    const testing = (): void => {
+        socketClient.emit('kick', 'testing');
+    };
+
     return (
         <div>
             {joinStatus.joined ? (
@@ -116,6 +120,9 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
                                 );
                             })}
                     </div>
+                    <button type="button" onClick={testing}>
+                        kick testing
+                    </button>
                     <MessagingInput sendMessage={sendMessage} />
                 </>
             ) : (

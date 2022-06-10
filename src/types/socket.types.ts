@@ -50,4 +50,7 @@ interface ClientToServerEvents {
     enter_room: (roomID: string, enterMode: EnterMode) => void;
     leave_room: () => void;
     message: (message: string) => void;
+
+    // commnads
+    kick: (message: string, reason?: string) => void;
 }
