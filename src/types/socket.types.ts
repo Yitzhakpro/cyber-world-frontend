@@ -20,10 +20,13 @@ export interface JoinStatus {
     errorMessage?: string;
 }
 
+type Action = 'join' | 'leave' | 'message';
+
 export interface MessageData {
     id: string;
     username: string;
-    rank: string;
+    rank: Rank;
+    action: Action;
     text: string;
     timestamp: Date;
 }

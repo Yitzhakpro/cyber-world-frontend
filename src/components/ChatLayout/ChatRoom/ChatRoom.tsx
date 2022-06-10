@@ -45,19 +45,36 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
     // recieve messages logic
     useEffect(() => {
         socketClient.on('message_recieved', (newMessage) => {
+            const { username: newMessageUsername, rank, timestamp } = newMessage;
             const formatedMessage: MessageData = {
                 ...newMessage,
-                timestamp: new Date(newMessage.timestamp),
+                timestamp: new Date(timestamp),
             };
 
             const copyMessages = [...messages, formatedMessage];
             setMessages(copyMessages);
+
+            if (newMessage.action === 'join') {
+                const updatedRoomUsers = joinStatus.roomInfo?.concat({ username: newMessageUsername, rank });
+                setJoinStatus((prevJoinStatus) => ({
+                    ...prevJoinStatus,
+                    roomInfo: updatedRoomUsers,
+                }));
+            } else if (newMessage.action === 'leave') {
+                const updatedRoomUsers = joinStatus.roomInfo?.filter(
+                    (userObject) => userObject.username !== newMessageUsername
+                );
+                setJoinStatus((prevJoinStatus) => ({
+                    ...prevJoinStatus,
+                    roomInfo: updatedRoomUsers,
+                }));
+            }
         });
 
         return () => {
             socketClient.off('message_recieved');
         };
-    }, [socketClient, messages]);
+    }, [socketClient, messages, joinStatus.roomInfo, setJoinStatus]);
 
     const sendMessage = (message: string): void => {
         socketClient.emit('message', message);
