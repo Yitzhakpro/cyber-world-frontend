@@ -1,4 +1,11 @@
 import { Socket } from 'socket.io-client';
+import { Rank } from './general.types';
+
+// general types
+type SocketUserData = {
+    username: string;
+    rank: Rank;
+};
 
 // socket related
 export type ClientMessageSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
@@ -9,6 +16,8 @@ export interface JoinStatus {
     joined: boolean;
     errorMessage?: string;
 }
+
+type ServerInfo = SocketUserData[];
 
 export interface MessageData {
     id: string;
@@ -22,7 +31,7 @@ interface ServerToClientEvents {
     all_rooms: (allRooms: string[]) => void;
     // join logic
     join_failed: (reason: string) => void;
-    joined_successfully: () => void;
+    joined_successfully: (serverInfo: ServerInfo) => void;
     // message logic
     message_recieved: (message: MessageData) => void;
 }
