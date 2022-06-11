@@ -1,4 +1,4 @@
-type Rank = 'owner' | 'mod' | 'helper' | 'user';
+export type Rank = 'owner' | 'mod' | 'helper' | 'user';
 
 export interface UserInfo {
     username: string;

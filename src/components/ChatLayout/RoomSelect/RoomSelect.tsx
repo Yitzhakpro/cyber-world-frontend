@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RoomsList from '../RoomsList';
 import { generateRoomID } from '../../../utils';
-import { ClientMessageSocket, JoinStatus, EnterMode } from '../../../types';
+import { ClientMessageSocket, RoomSummeryInfo, JoinStatus, EnterMode } from '../../../types';
 
 interface IRoomSelectProps {
     socketClient: ClientMessageSocket;
@@ -15,7 +15,7 @@ function RoomSelect(props: IRoomSelectProps): JSX.Element {
 
     const navigate = useNavigate();
 
-    const [roomsList, setRoomsList] = useState<string[]>([]);
+    const [roomsList, setRoomsList] = useState<RoomSummeryInfo[]>([]);
     const [roomSelectMode, setRoomSelectMode] = useState<EnterMode>('create');
     const [roomId, setRoomId] = useState('');
 
@@ -32,8 +32,8 @@ function RoomSelect(props: IRoomSelectProps): JSX.Element {
     }, [socketClient]);
 
     useEffect(() => {
-        socketClient.on('joined_successfully', () => {
-            setJoinStatus({ joined: true, errorMessage: '' });
+        socketClient.on('joined_successfully', (roomInfo) => {
+            setJoinStatus({ joined: true, roomInfo, errorMessage: '' });
             navigate(`/${roomId}`);
         });
         socketClient.on('join_failed', (reason: string) => {
