@@ -1,8 +1,8 @@
 import React from 'react';
-import { EnterMode } from '../../../types';
+import { RoomSummeryInfo, EnterMode } from '../../../types';
 
 interface IRoomsListProps {
-    roomsList: string[];
+    roomsList: RoomSummeryInfo[];
     joinRoom: (id?: string, enterMode?: EnterMode) => void;
 }
 
@@ -17,11 +17,13 @@ function RoomsList(props: IRoomsListProps): JSX.Element {
         <div>
             <h1>Rooms List</h1>
 
-            {roomsList.map((roomID) => {
+            {roomsList.map((roomObject) => {
+                const { name, usersCount } = roomObject;
                 return (
                     <div>
-                        <p>{roomID}</p>
-                        <button type="button" onClick={() => handleJoinRoom(roomID, 'join')}>
+                        <p>{name}</p>
+                        <p>users: {usersCount}</p>
+                        <button type="button" onClick={() => handleJoinRoom(name, 'join')}>
                             JOIN
                         </button>
                     </div>

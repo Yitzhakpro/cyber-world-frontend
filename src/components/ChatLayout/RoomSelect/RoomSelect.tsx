@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RoomsList from '../RoomsList';
 import { generateRoomID } from '../../../utils';
-import { ClientMessageSocket, JoinStatus, EnterMode } from '../../../types';
+import { ClientMessageSocket, RoomSummeryInfo, JoinStatus, EnterMode } from '../../../types';
 
 interface IRoomSelectProps {
     socketClient: ClientMessageSocket;
@@ -15,7 +15,7 @@ function RoomSelect(props: IRoomSelectProps): JSX.Element {
 
     const navigate = useNavigate();
 
-    const [roomsList, setRoomsList] = useState<string[]>([]);
+    const [roomsList, setRoomsList] = useState<RoomSummeryInfo[]>([]);
     const [roomSelectMode, setRoomSelectMode] = useState<EnterMode>('create');
     const [roomId, setRoomId] = useState('');
 
