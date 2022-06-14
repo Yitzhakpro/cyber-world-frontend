@@ -76,6 +76,15 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
         };
     }, [socketClient, messages, joinStatus.roomInfo, setJoinStatus]);
 
+    // commands handle logic
+    useEffect(() => {
+        socketClient.on('kick_failed', (reason) => console.log(reason));
+
+        return () => {
+            socketClient.off('kick_failed');
+        };
+    }, [socketClient]);
+
     const handleCommand = (command: string): void => {
         const commandWithoutSlash = command.slice(1);
         const splittedCommand = commandWithoutSlash.split(' ');

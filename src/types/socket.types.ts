@@ -43,6 +43,9 @@ interface ServerToClientEvents {
     joined_successfully: (serverInfo: RoomInfo) => void;
     // message logic
     message_recieved: (message: MessageData) => void;
+
+    // commands
+    kick_failed: (reason: string) => void;
 }
 
 interface ClientToServerEvents {
