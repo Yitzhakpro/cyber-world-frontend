@@ -52,5 +52,5 @@ interface ClientToServerEvents {
     message: (message: string) => void;
 
     // commnads
-    kick: (message: string, reason?: string) => void;
+    kick: (username: string, reason?: string) => void;
 }

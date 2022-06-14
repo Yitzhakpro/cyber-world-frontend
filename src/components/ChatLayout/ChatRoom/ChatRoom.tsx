@@ -76,12 +76,30 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
         };
     }, [socketClient, messages, joinStatus.roomInfo, setJoinStatus]);
 
-    const sendMessage = (message: string): void => {
-        socketClient.emit('message', message);
+    const handleCommand = (command: string): void => {
+        const commandWithoutSlash = command.slice(1);
+        const splittedCommand = commandWithoutSlash.split(' ');
+        const commandName = splittedCommand[0];
+
+        switch (commandName) {
+            case 'kick': {
+                const kickedUsername = splittedCommand[1];
+                const reason = splittedCommand.slice(2).join(' ');
+                socketClient.emit('kick', kickedUsername, reason);
+                break;
+            }
+            default: {
+                console.log('command doesnt exist');
+            }
+        }
     };
 
-    const testing = (): void => {
-        socketClient.emit('kick', 'testing');
+    const sendMessage = (message: string): void => {
+        if (message.charAt(0) === '/') {
+            handleCommand(message);
+        } else {
+            socketClient.emit('message', message);
+        }
     };
 
     return (
@@ -120,9 +138,7 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
                                 );
                             })}
                     </div>
-                    <button type="button" onClick={testing}>
-                        kick testing
-                    </button>
+
                     <MessagingInput sendMessage={sendMessage} />
                 </>
             ) : (
