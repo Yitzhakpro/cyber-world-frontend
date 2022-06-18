@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Login from '../Login';
 import Register from '../Register';
+import './authPage.css';
 
 interface IAuthPageProps {
     setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -8,19 +9,40 @@ interface IAuthPageProps {
 
 function AuthPage(props: IAuthPageProps): JSX.Element {
     const { setLoggedIn } = props;
-    const [inRegister, setInRegister] = useState(false);
+    const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
 
-    const handleChangeRegisterMode = (): void => {
-        setInRegister((prevRegMode) => !prevRegMode);
+    const handleLoginSelect = (): void => {
+        setAuthMode('login');
+    };
+
+    const handleRegisterSelect = (): void => {
+        setAuthMode('register');
     };
 
     return (
-        <div>
-            Auth Page
-            {inRegister ? <Register setLoggedIn={setLoggedIn} /> : <Login setLoggedIn={setLoggedIn} />}
-            <button type="button" onClick={handleChangeRegisterMode}>
-                {inRegister ? 'If you have an account, click here to login' : 'Click here to create an account'}
-            </button>
+        <div className="auth-page">
+            <div className="auth-form">
+                <div className="auth-form-modes-select">
+                    <button
+                        type="button"
+                        className="auth-mode-button left"
+                        disabled={authMode === 'login'}
+                        onClick={handleLoginSelect}
+                    >
+                        Login
+                    </button>
+                    <button
+                        type="button"
+                        className="auth-mode-button right"
+                        disabled={authMode === 'register'}
+                        onClick={handleRegisterSelect}
+                    >
+                        Register
+                    </button>
+                </div>
+
+                {authMode === 'register' ? <Register setLoggedIn={setLoggedIn} /> : <Login setLoggedIn={setLoggedIn} />}
+            </div>
         </div>
     );
 }

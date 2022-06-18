@@ -1,6 +1,8 @@
 :root {
     --primary-color: green;
-    --secondary-color: #383838;
+    --secondary-color: #252525;
+
+    --text-primary-color: #46c016;
 }
 
 html,
@@ -9,4 +11,7 @@ body,
 .App {
     height: 100vh;
     width: 100vw;
+
+    background-color: var(--secondary-color);
+    color: white;
 }
