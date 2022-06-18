@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { UserContext } from '../../../context';
+import { useCommandsHandler } from '../../../hooks';
 import Message from './Message';
 import MessagingInput from './MessagingInput';
-import { UserContext } from '../../../context';
 import { ClientMessageSocket, JoinStatus, MessageData } from '../../../types';
 
 interface IChatRoomProps {
@@ -14,8 +15,9 @@ interface IChatRoomProps {
 function ChatRoom(props: IChatRoomProps): JSX.Element {
     const { socketClient, joinStatus, setJoinStatus } = props;
     const params = useParams();
-    const navigate = useNavigate();
     const { username } = useContext(UserContext);
+    useCommandsHandler(socketClient);
+
     const [messages, setMessages] = useState<MessageData[]>([]);
     const readyToLeave = useRef(false);
 
@@ -76,21 +78,6 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
             socketClient.off('message_recieved');
         };
     }, [socketClient, messages, joinStatus.roomInfo, setJoinStatus]);
-
-    // commands handle logic
-    useEffect(() => {
-        socketClient.on('got_kicked', (reason) => {
-            // TODO: display kicked modal
-            console.log(`Reason for kick: ${reason}`);
-            navigate('/');
-        });
-        socketClient.on('kick_failed', (reason) => console.log(reason));
-
-        return () => {
-            socketClient.off('got_kicked');
-            socketClient.off('kick_failed');
-        };
-    }, [socketClient, navigate]);
 
     const handleCommand = (command: string): void => {
         const commandWithoutSlash = command.slice(1);
