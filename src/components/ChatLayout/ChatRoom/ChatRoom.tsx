@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Message from './Message';
 import MessagingInput from './MessagingInput';
 import { UserContext } from '../../../context';
@@ -14,6 +14,7 @@ interface IChatRoomProps {
 function ChatRoom(props: IChatRoomProps): JSX.Element {
     const { socketClient, joinStatus, setJoinStatus } = props;
     const params = useParams();
+    const navigate = useNavigate();
     const { username } = useContext(UserContext);
     const [messages, setMessages] = useState<MessageData[]>([]);
     const readyToLeave = useRef(false);
@@ -78,12 +79,18 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
 
     // commands handle logic
     useEffect(() => {
+        socketClient.on('got_kicked', (reason) => {
+            // TODO: display kicked modal
+            console.log(`Reason for kick: ${reason}`);
+            navigate('/');
+        });
         socketClient.on('kick_failed', (reason) => console.log(reason));
 
         return () => {
+            socketClient.off('got_kicked');
             socketClient.off('kick_failed');
         };
-    }, [socketClient]);
+    }, [socketClient, navigate]);
 
     const handleCommand = (command: string): void => {
         const commandWithoutSlash = command.slice(1);
