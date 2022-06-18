@@ -1,3 +1,4 @@
 import useAuthentication from './useAuthentication';
+import useCommandsHandler from './useCommandsHandler';
 
-export { useAuthentication };
+export { useAuthentication, useCommandsHandler };

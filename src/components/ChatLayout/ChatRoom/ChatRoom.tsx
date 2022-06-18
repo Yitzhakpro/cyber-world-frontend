@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import { UserContext } from '../../../context';
+import { useCommandsHandler } from '../../../hooks';
 import Message from './Message';
 import MessagingInput from './MessagingInput';
-import { UserContext } from '../../../context';
 import { ClientMessageSocket, JoinStatus, MessageData } from '../../../types';
 
 interface IChatRoomProps {
@@ -15,6 +16,8 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
     const { socketClient, joinStatus, setJoinStatus } = props;
     const params = useParams();
     const { username } = useContext(UserContext);
+    useCommandsHandler(socketClient);
+
     const [messages, setMessages] = useState<MessageData[]>([]);
     const readyToLeave = useRef(false);
 
@@ -76,8 +79,30 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
         };
     }, [socketClient, messages, joinStatus.roomInfo, setJoinStatus]);
 
+    const handleCommand = (command: string): void => {
+        const commandWithoutSlash = command.slice(1);
+        const splittedCommand = commandWithoutSlash.split(' ');
+        const commandName = splittedCommand[0];
+
+        switch (commandName) {
+            case 'kick': {
+                const kickedUsername = splittedCommand[1];
+                const reason = splittedCommand.slice(2).join(' ');
+                socketClient.emit('kick', kickedUsername, reason);
+                break;
+            }
+            default: {
+                console.log('command doesnt exist');
+            }
+        }
+    };
+
     const sendMessage = (message: string): void => {
-        socketClient.emit('message', message);
+        if (message.charAt(0) === '/') {
+            handleCommand(message);
+        } else {
+            socketClient.emit('message', message);
+        }
     };
 
     return (
@@ -116,6 +141,7 @@ function ChatRoom(props: IChatRoomProps): JSX.Element {
                                 );
                             })}
                     </div>
+
                     <MessagingInput sendMessage={sendMessage} />
                 </>
             ) : (
