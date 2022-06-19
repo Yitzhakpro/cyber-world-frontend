@@ -38,20 +38,30 @@ function Register(props: IRegisterProps): JSX.Element {
     };
 
     return (
-        <form autoComplete="off" onSubmit={handleRegister}>
-            <span>email:</span>
-            <Input type="email" required value={email} onChange={handleEmailChange} />
+        <form className="auth-form" autoComplete="off" onSubmit={handleRegister}>
+            <div className="auth-section">
+                <span>Email:</span>
+                <Input type="email" required value={email} onChange={handleEmailChange} />
+            </div>
 
-            <span>username:</span>
-            <Input value={username} required onChange={handleUsernameChange} />
+            <div className="auth-section">
+                <span>Username:</span>
+                <Input value={username} required onChange={handleUsernameChange} />
+            </div>
 
-            <span>password:</span>
-            <Input type="password" required value={password} onChange={handlePasswordChange} />
+            <div className="auth-section">
+                <span>Password:</span>
+                <Input type="password" required value={password} onChange={handlePasswordChange} />
+            </div>
 
-            <span>Birth Date:</span>
-            <Input type="date" required value={birthDate} onChange={handleBirthDateChange} />
+            <div className="auth-section">
+                <span>Birth Date:</span>
+                <Input type="date" required value={birthDate} onChange={handleBirthDateChange} />
+            </div>
 
-            <button type="submit">Register</button>
+            <button className="auth-submit" type="submit">
+                <span>Register</span>
+            </button>
         </form>
     );
 }

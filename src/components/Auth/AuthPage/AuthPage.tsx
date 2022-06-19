@@ -21,7 +21,7 @@ function AuthPage(props: IAuthPageProps): JSX.Element {
 
     return (
         <div className="auth-page">
-            <div className="auth-form">
+            <div className="auth-form-container">
                 <div className="auth-form-modes-select">
                     <button
                         type="button"

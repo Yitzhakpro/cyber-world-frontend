@@ -7,9 +7,14 @@
     align-items: center;
 }
 
-.auth-form {
-    height: clamp(400px, 70%, 1000px);
-    width: clamp(300px, 40%, 500px);
+.auth-form-container {
+    --min-auth-height: 400px;
+    --max-auth-height: 1000px;
+    --min-auth-width: 300px;
+    --max-auth-width: 500px;
+
+    height: clamp(var(--min-auth-height), 70%, var(--max-auth-height));
+    width: clamp(var(--min-auth-width), 40%, var(--max-auth-width));
 
     display: flex;
     flex-direction: column;
@@ -17,6 +22,9 @@
 
     background-color: #383838;
     border-radius: 25px;
+
+    -webkit-box-shadow: 0px 6px 15px 2px rgba(0, 0, 0, 0.51);
+    box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.51);
 }
 
 .auth-form-modes-select {
@@ -32,6 +40,8 @@
 
     color: var(--text-primary-color);
     font-weight: bold;
+    font-size: 1em;
+    text-transform: uppercase;
 
     background-color: transparent;
     border: 0;
@@ -59,4 +69,48 @@
 
 .auth-mode-button.right {
     border-top-right-radius: 25px;
+}
+
+/* the forms of login and passwords */
+.auth-form {
+    margin: 10% 0;
+
+    width: clamp(calc(var(--min-auth-width) - 40px), 70%, var(--max-auth-width));
+
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-section {
+    margin: 3% 0;
+
+    display: flex;
+    flex-direction: column;
+
+    font-weight: bold;
+}
+
+button.auth-submit {
+    margin-top: 10%;
+
+    padding: 10px 50px;
+
+    align-self: center;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    border: 0;
+    border-radius: 10px;
+    background-color: var(--text-primary-color);
+    color: white;
+
+    transition: background-color 0.15s linear;
+}
+
+button.auth-submit:hover {
+    background-color: white;
+    color: var(--text-primary-color);
+
+    cursor: pointer;
 }

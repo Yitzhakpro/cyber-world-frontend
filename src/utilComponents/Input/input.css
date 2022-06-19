@@ -1,0 +1,11 @@
+.custom-cyber-input {
+    border: 0;
+    border-bottom: 2px var(--text-primary-color) solid;
+
+    background-color: #383838;
+    color: white;
+}
+
+.custom-cyber-input:focus-visible {
+    outline: none;
+}

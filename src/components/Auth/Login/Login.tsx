@@ -28,14 +28,20 @@ function Login(props: ILoginProps): JSX.Element {
     };
 
     return (
-        <form onSubmit={handleLogin}>
-            <span>email:</span>
-            <Input type="email" required value={email} onChange={handleEmailChange} />
+        <form className="auth-form" onSubmit={handleLogin}>
+            <div className="auth-section">
+                <span>Email:</span>
+                <Input type="email" required value={email} onChange={handleEmailChange} />
+            </div>
 
-            <span>password:</span>
-            <Input type="password" required value={password} onChange={handlePasswordChange} />
+            <div className="auth-section">
+                <span>Password:</span>
+                <Input type="password" required value={password} onChange={handlePasswordChange} />
+            </div>
 
-            <button type="submit">Login</button>
+            <button className="auth-submit" type="submit">
+                Login
+            </button>
         </form>
     );
 }

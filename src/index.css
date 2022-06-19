@@ -14,4 +14,6 @@ body,
 
     background-color: var(--secondary-color);
     color: white;
+
+    caret-color: var(--text-primary-color);
 }
