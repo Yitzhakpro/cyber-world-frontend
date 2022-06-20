@@ -34,7 +34,7 @@ class AuthClient {
     async register(
         email: string,
         username: string,
-        birthDate: string, // iso string
+        birthDate: Date,
         password: string
     ): Promise<AxiosResponse<RegisterResponse>> {
         const registerResponse = await this.client.post<RegisterResponse>('/register', {

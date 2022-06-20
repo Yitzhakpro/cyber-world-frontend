@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import DatePicker from 'react-datepicker';
 import { Input } from '../../../utilComponents';
 import { Auth } from '../../../services';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 interface IRegisterProps {
     setLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,7 +15,7 @@ function Register(props: IRegisterProps): JSX.Element {
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [birthDate, setBirthDate] = useState(new Date().toISOString().slice(0, 10));
+    const [birthDate, setBirthDate] = useState(new Date());
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setEmail(e.target.value);
@@ -26,8 +29,8 @@ function Register(props: IRegisterProps): JSX.Element {
         setPassword(e.target.value);
     };
 
-    const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-        setBirthDate(e.target.value);
+    const handleBirthDateChange = (newDate: Date): void => {
+        setBirthDate(newDate);
     };
 
     const handleRegister = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -56,7 +59,7 @@ function Register(props: IRegisterProps): JSX.Element {
 
             <div className="auth-section">
                 <span>Birth Date:</span>
-                <Input type="date" required value={birthDate} onChange={handleBirthDateChange} />
+                <DatePicker required selected={birthDate} onChange={handleBirthDateChange} />
             </div>
 
             <button className="auth-submit" type="submit">
