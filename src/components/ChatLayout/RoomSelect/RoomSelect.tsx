@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import RoomsList from '../RoomsList';
 import { generateRoomID } from '../../../utils';
 import { ClientMessageSocket, RoomSummeryInfo, JoinStatus, EnterMode } from '../../../types';
+import './roomSelect.css';
 
 interface IRoomSelectProps {
     socketClient: ClientMessageSocket;
@@ -74,8 +75,10 @@ function RoomSelect(props: IRoomSelectProps): JSX.Element {
     };
 
     return (
-        <div>
-            {roomsList.length > 0 && <RoomsList roomsList={roomsList} joinRoom={joinRoom} />}
+        <div className="room-select-page">
+            <div className="room-select-container">
+                <RoomsList roomsList={roomsList} joinRoom={joinRoom} />
+            </div>
 
             <button type="button" onClick={handleRoomSelectModeChange}>
                 {roomSelectMode}

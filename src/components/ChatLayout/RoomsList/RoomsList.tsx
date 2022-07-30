@@ -14,22 +14,35 @@ function RoomsList(props: IRoomsListProps): JSX.Element {
     };
 
     return (
-        <div>
-            <h1>Rooms List</h1>
-
-            {roomsList.map((roomObject) => {
-                const { name, usersCount } = roomObject;
-                return (
-                    <div>
-                        <p>{name}</p>
-                        <p>users: {usersCount}</p>
-                        <button type="button" onClick={() => handleJoinRoom(name, 'join')}>
-                            JOIN
-                        </button>
-                    </div>
-                );
-            })}
-        </div>
+        <table>
+            <tr>
+                <th>Room Name</th>
+                <th>Users Count</th>
+                <th>Action</th>
+            </tr>
+            {roomsList.length ? (
+                roomsList.map((roomObject) => {
+                    const { name, usersCount } = roomObject;
+                    return (
+                        <tr>
+                            <td>{name}</td>
+                            <td>{usersCount}</td>
+                            <td>
+                                <button type="button" onClick={() => handleJoinRoom(name, 'join')}>
+                                    JOIN
+                                </button>
+                            </td>
+                        </tr>
+                    );
+                })
+            ) : (
+                <tr>
+                    <td>No rooms</td>
+                    <td>0</td>
+                    <td>{}</td>
+                </tr>
+            )}
+        </table>
     );
 }
 
